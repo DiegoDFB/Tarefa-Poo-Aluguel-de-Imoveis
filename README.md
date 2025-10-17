@@ -35,4 +35,5 @@
     - Ao iniciar o programa, são cadastrados dados iniciais (proprietários, inquilinos e imóveis) para 
       testes mais rápidos das funcionalidades.
       
-    - Foi adicionada a função de descontos por quantidade de meses alugados -> a partir de 1 ano = 5%; a partir de 2 anos = 10%; a partir de 3 anos = 15%
+    - Foi adicionada a função de descontos por quantidade de meses alugados -> a partir de 1 ano = 5%;
+      a partir de 2 anos = 10%; a partir de 3 anos = 15%
