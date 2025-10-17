@@ -15,15 +15,6 @@
       método ObterInformacoes() é definido como virtual, já possuindo estrutura padrão e sendo posteriormente 
       incrementado nas classes filhas.
 
-
-### Sobrescrita do Método EstaAlugado()
-    Na sobrescrita do método EstaAlugado() nas subclasses, foi feita a seguinte alteração:
-        - Na classe Imovel, este método é bool, portanto não haveria como retornar as frases solicitadas na 
-          sobrescrita deste método diretamente.
-          
-        - Por isso, o método retorna o valor do atributo Alugado, enquanto que o novo método ObterStatus() 
-          compara o estado do atributo e retorna a string correspondente.
-
 ### Adicionais
 
     - As classes Casa e Apartamento, além de herdarem de Imovel, possuem atributos específicos.
