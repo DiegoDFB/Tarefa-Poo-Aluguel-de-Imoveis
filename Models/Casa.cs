@@ -10,9 +10,9 @@ namespace SistemaAluguelImovel.Models
         protected int AreaQuintal  { get; set; }
         protected int VagasGaragem  { get; set; }
 
-        public Casa(string endereco, int numero, Proprietario proprietario,
+        public Casa(int id, string endereco, int numero, Proprietario proprietario,
                     decimal valorBaseAluguel, int areaQuintal, int vagasGaragem)
-                    : base(endereco, numero, proprietario, valorBaseAluguel)
+                    : base(id, endereco, numero, proprietario, valorBaseAluguel)
         {
             AreaQuintal = areaQuintal;
             VagasGaragem = vagasGaragem;
@@ -21,9 +21,9 @@ namespace SistemaAluguelImovel.Models
         public int GetAreaQuintal() => AreaQuintal;
         public int GetVagasGaragem() => VagasGaragem;
     
-    public override bool EstaAlugado()
+    public override string ObterStatusAluguel()
     {
-        return Alugado;
+        return Alugado ? "A casa está alugada" : "A casa está disponível";
     }
 
     public override string ContatoProprietario()
@@ -31,15 +31,26 @@ namespace SistemaAluguelImovel.Models
         return $"Contato do proprietário da casa: {Proprietario.GetTelefone()}";
     }
 
-    public override string ObterInformacoes()
-    {
-        return base.ObterInformacoes() + 
-               $" | Tipo: Casa | Área do Quintal: {AreaQuintal}m² | Vagas Garagem: {VagasGaragem}";
-    }
+        public override string ObterInformacoes()
+        {
+            return base.ObterInformacoes() +
+                   $" | Tipo: Casa | Área do Quintal: {AreaQuintal}m² | Vagas Garagem: {VagasGaragem}";
+        }
+    
+    public override decimal CalcularAluguel(int dias)
+        {
+            if (dias <= 0) return 0;
 
-    public string ObterStatus()
-    {
-        return Alugado ? "A casa está alugada" : "A casa está disponível";
-    }
+            decimal valorTotal = ValorBaseAluguel * dias;
+
+            if (dias >= 1095)
+                valorTotal *= 0.85m;
+            else if (dias >= 730)
+                valorTotal *= 0.90m;
+            else if (dias >= 365)
+                valorTotal *= 0.95m;
+
+            return valorTotal;
+        }
 }
 }

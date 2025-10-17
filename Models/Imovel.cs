@@ -7,6 +7,7 @@ namespace SistemaAluguelImovel.Models
 {
     public abstract class Imovel
     {
+        protected int Id;
         protected string Endereco;
         protected int Numero;
         protected bool Alugado;
@@ -14,8 +15,9 @@ namespace SistemaAluguelImovel.Models
         protected Inquilino InquilinoAtual;
         protected decimal ValorBaseAluguel;
 
-        public Imovel(string endereco, int numero, Proprietario proprietario, decimal valorBaseAluguel)
+        public Imovel(int id, string endereco, int numero, Proprietario proprietario, decimal valorBaseAluguel)
         {
+            Id = id;
             Endereco = endereco;
             Numero = numero;
             Proprietario = proprietario;
@@ -23,7 +25,8 @@ namespace SistemaAluguelImovel.Models
             Alugado = false;
             InquilinoAtual = null;
         }
-
+        
+        public int GetId() => Id;
         public string GetEndereco() => Endereco;
         public int GetNumero() => Numero;
         public bool GetAlugado() => Alugado;
@@ -43,24 +46,13 @@ namespace SistemaAluguelImovel.Models
                 ValorBaseAluguel = valorBase;
         }
 
-        public abstract bool EstaAlugado();
+        public virtual string ObterStatusAluguel()
+        {
+            return Alugado ? "O imóvel está alugado" : "O imóvel está disponível";
+        }
         public abstract string ContatoProprietario();
 
-        public virtual decimal CalcularAluguel(int qtdMeses)
-        {
-            if (qtdMeses <= 0) return 0;
-
-            decimal valorTotal = ValorBaseAluguel * qtdMeses;
-
-            if (qtdMeses >= 36)
-                valorTotal *= 0.85m;
-            else if (qtdMeses >= 24)
-                valorTotal *= 0.90m;
-            else if (qtdMeses >= 12)
-                valorTotal *= 0.95m;
-
-            return valorTotal;
-        }
+        public abstract decimal CalcularAluguel(int dias);
 
         public bool Alugar(Inquilino inquilino)
         {

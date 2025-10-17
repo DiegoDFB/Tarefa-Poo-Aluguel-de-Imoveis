@@ -11,9 +11,9 @@ namespace SistemaAluguelImovel.Models
         protected int Andar  { get; set; }
         protected bool PossuiElevador  { get; set; }
 
-        public Apartamento(string endereco, int numero, Proprietario proprietario,
+        public Apartamento(int id, string endereco, int numero, Proprietario proprietario,
                           decimal valorBaseAluguel, int numeroApto, int andar, bool possuiElevador)
-                          : base(endereco, numero, proprietario, valorBaseAluguel)
+                          : base(id, endereco, numero, proprietario, valorBaseAluguel)
         {
             NumeroApto = numeroApto;
             Andar = andar;
@@ -21,9 +21,10 @@ namespace SistemaAluguelImovel.Models
         }
 
     
-    public override bool EstaAlugado()
+    public override string ObterStatusAluguel()
     {
-        return Alugado;
+        string status = Alugado ? "está alugado" : "está disponível";
+        return $"O apartamento de número {NumeroApto} {status}";
     }
 
     public override string ContatoProprietario()
@@ -31,16 +32,26 @@ namespace SistemaAluguelImovel.Models
         return $"Contato do proprietário do apartamento: {Proprietario.GetTelefone()}";
     }
 
-    public override string ObterInformacoes()
-    {
-        return base.ObterInformacoes() +
-               $" | Tipo: Apartamento | Andar: {Andar} | Elevador: {(PossuiElevador ? "Sim" : "Não")}";
-    }
+        public override string ObterInformacoes()
+        {
+            return base.ObterInformacoes() +
+                   $" | Tipo: Apartamento | Andar: {Andar} | Elevador: {(PossuiElevador ? "Sim" : "Não")}";
+        }
+    
+    public override decimal CalcularAluguel(int dias)
+        {
+            if (dias <= 0) return 0;
 
-    public string ObterStatus()
-    {
-        string status = Alugado ? "está alugado" : "está disponível";
-        return $"O apartamento de número {NumeroApto} {status}";
-    }
+            decimal valorTotal = ValorBaseAluguel * dias;
+
+            if (dias >= 1095)
+                valorTotal *= 0.90m;
+            else if (dias >= 730)
+                valorTotal *= 0.92m;
+            else if (dias >= 365)
+                valorTotal *= 0.98m;
+
+            return valorTotal;
+        }
 }
 }

@@ -64,8 +64,8 @@ class Program
         var inq2 = new Inquilino("Pedro Henrique Silva", "(11) 5555-6666", "789.456.123-44");
         inquilinos.AddRange(new[] { inq1, inq2 });
 
-        imoveis.Add(new Casa("Rua Belém", 118, prop1, 1500.00m, 100, 2));
-        imoveis.Add(new Apartamento("Av. Celso Garcia", 1907, prop2, 2000.00m, 64, 6, true));
+        imoveis.Add(new Casa(imoveis.Count() + 1, "Rua Belém", 118, prop1, 1500.00m, 100, 2));
+        imoveis.Add(new Apartamento(imoveis.Count() + 1, "Av. Celso Garcia", 1907, prop2, 2000.00m, 64, 6, true));
     }
 
     static void CadastrarImovel()
@@ -88,14 +88,15 @@ class Program
 
         var proprietario = BuscarOuCadastrarProprietario();
 
+        int id = imoveis.Count() + 1;
+
         if (tipo == "1")
         {
             Console.Write("Área do quintal (em m²): ");
             int areaQuintal = int.Parse(Console.ReadLine());
             Console.Write("Quantidade de vagas na garagem: ");
             int garagem = int.Parse(Console.ReadLine());
-
-            var casa = new Casa(endereco, numero, proprietario, valor, areaQuintal, garagem);
+            var casa = new Casa(id, endereco, numero, proprietario, valor, areaQuintal, garagem);
             imoveis.Add(casa);
             Console.WriteLine("Casa cadastrada com sucesso!");
         }
@@ -113,7 +114,7 @@ class Program
                 elevador = true;
             }
 
-            var apto = new Apartamento(endereco, numero, proprietario, valor, numeroApto, andar, elevador);
+            var apto = new Apartamento(id, endereco, numero, proprietario, valor, numeroApto, andar, elevador);
             imoveis.Add(apto);
             Console.WriteLine("Apartamento cadastrado com sucesso!");
         }
@@ -177,9 +178,9 @@ class Program
             Console.WriteLine($"\n{i + 1} - {imoveis[i].ObterInformacoes()}");
             
             if (imoveis[i] is Casa casa)
-                Console.WriteLine($"   Status: {casa.ObterStatus()}");
+                Console.WriteLine($"   Status: {casa.ObterStatusAluguel()}");
             else if (imoveis[i] is Apartamento apto)
-                Console.WriteLine($"   Status: {apto.ObterStatus()}");
+                Console.WriteLine($"   Status: {apto.ObterStatusAluguel()}");
 
             if (imoveis[i].GetAlugado())
             {
@@ -327,7 +328,7 @@ class Program
         }
 
         Console.Write("Quantidade de meses: ");
-        int meses = int.Parse(Console.ReadLine());
+        int meses = int.Parse(Console.ReadLine()) * 30;
 
         decimal valorTotal = imoveis[index].CalcularAluguel(meses);
         decimal valorSemDesconto = imoveis[index].GetValorBaseAluguel() * meses;
